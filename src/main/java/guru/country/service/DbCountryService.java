@@ -3,12 +3,12 @@ package guru.country.service;
 import guru.country.data.CountryEntity;
 import guru.country.data.CountryRepository;
 import guru.country.domain.Country;
+import guru.country.ex.NoSuchCountryByCodeException;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 
 import java.util.Date;
 import java.util.List;
-import java.util.NoSuchElementException;
 
 @Component
 public class DbCountryService implements CountryService{
@@ -50,7 +50,7 @@ public class DbCountryService implements CountryService{
                     countryEntity.setCode(country.code());
                     countryRepository.save(countryEntity);
                 },
-                ()-> {throw new  NoSuchElementException("No such country");}
+                ()-> {throw new NoSuchCountryByCodeException("No such country");}
         );
     }
 
