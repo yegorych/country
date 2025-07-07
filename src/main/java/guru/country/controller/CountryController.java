@@ -4,7 +4,6 @@ package guru.country.controller;
 import guru.country.domain.Country;
 import guru.country.dto.CountryDto;
 import guru.country.service.CountryService;
-import jakarta.websocket.server.PathParam;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 
@@ -29,7 +28,7 @@ public class CountryController {
 
     @PostMapping("/add")
     public void add(@RequestBody CountryDto country) {
-        countryService.addCountry(Country.fromCountryDto(country));
+        countryService.addCountry(Country.instance(country));
     }
 
     @PatchMapping("/update/{code}")
