@@ -27,6 +27,8 @@ dependencies {
     testRuntimeOnly 'org.junit.platform:junit-platform-launcher'
     implementation 'org.flywaydb:flyway-core:10.17.1'
     implementation 'org.flywaydb:flyway-database-postgresql:10.17.1'
+    implementation 'org.springframework.boot:spring-boot-starter-graphql'
+    implementation 'com.tailrocks.graphql:graphql-datetime-spring-boot-starter:6.0.0'
 }
 
 tasks.named('test') {

@@ -31,6 +31,9 @@ spring:
     show-sql: false
     generate-ddl: true
     open-in-view: false
+  graphql:
+    graphiql:
+      enabled: true
 
 server:
   port: 8096
