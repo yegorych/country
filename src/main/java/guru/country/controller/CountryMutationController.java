@@ -20,7 +20,6 @@ public class CountryMutationController {
         this.countryService = countryService;
     }
 
-
     @MutationMapping
     public CountryGql add(@Argument CountryInputGql input) {
         return countryService.addCountryGql(input);
@@ -30,8 +29,4 @@ public class CountryMutationController {
     public void update(@Argument CountryInputGql input) {
         countryService.updateCountryGqlNameByCode(input);
     }
-
-
-
-
 }

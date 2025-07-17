@@ -7,7 +7,6 @@ import guru.country.domain.graphql.CountryInputGql;
 import java.util.List;
 
 public interface CountryService {
-
     List<Country> allCountries();
     List<CountryGql> allCountriesGpl();
     Country countryByCode(String code);
@@ -16,8 +15,4 @@ public interface CountryService {
     CountryGql addCountryGql(CountryInputGql countryGql);
     void updateCountryNameByCode(Country country);
     void updateCountryGqlNameByCode(CountryInputGql country);
-
-
-
-
 }
