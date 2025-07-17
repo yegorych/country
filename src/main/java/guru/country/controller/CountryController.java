@@ -27,13 +27,18 @@ public class CountryController {
     }
 
     @PostMapping("/add")
-    public void add(@RequestBody CountryDto country) {
-        countryService.addCountry(Country.instance(country));
+    public CountryDto add(@RequestBody CountryDto country) {
+        return CountryDto.fromCountry(countryService.addCountry(Country.instance(country)));
     }
 
     @PatchMapping("/update/{code}")
     public void update(@PathVariable String code, @RequestBody CountryDto country) {
         countryService.updateCountryNameByCode(new Country(country.name(), code, new Date()));
+    }
+
+    @GetMapping("/{code}")
+    public CountryDto byCode(@PathVariable String code) {
+        return CountryDto.fromCountry(countryService.countryByCode(code));
     }
 
 
