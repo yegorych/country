@@ -7,14 +7,13 @@ import guru.country.domain.graphql.CountryGql;
 import guru.country.domain.graphql.CountryInputGql;
 import guru.country.ex.NoSuchCountryByCodeException;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.lang.NonNull;
 import org.springframework.stereotype.Component;
 
 import java.util.Date;
 import java.util.List;
 
 @Component
-public class DbCountryService implements CountryService{
+public class DbCountryService implements CountryService {
     private final CountryRepository countryRepository;
 
     @Autowired

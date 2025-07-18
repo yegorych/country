@@ -1,4 +1,4 @@
-package guru.country.controller;
+package guru.country.controller.graphql;
 
 
 import guru.country.domain.graphql.CountryGql;

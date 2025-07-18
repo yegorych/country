@@ -1,4 +1,8 @@
 spring:
+  grpc:
+    server:
+      servlet:
+        enabled: false
   application:
     name: country
   datasource:
@@ -36,7 +40,7 @@ spring:
       enabled: true
 
 server:
-  port: 8096
+  port: 8087
 
 api:
   version: v1.0
