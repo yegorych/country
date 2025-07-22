@@ -2,7 +2,10 @@ package guru.country.service;
 
 import com.google.protobuf.Empty;
 import com.google.protobuf.util.Timestamps;
+import guru.country.data.CountryEntity;
+import guru.country.data.CountryRepository;
 import guru.country.domain.Country;
+import guru.country.ex.NoSuchCountryByCodeException;
 import guru.grpc.country.*;
 import io.grpc.stub.StreamObserver;
 import org.slf4j.Logger;
@@ -16,15 +19,18 @@ import java.util.List;
 public class GrpcCountryService extends CountryServiceGrpc.CountryServiceImplBase {
     private final static Logger log = LoggerFactory.getLogger(GrpcCountryService.class);
 
-    private final CountryService countryService;
+    private final CountryRepository countryRepository;
 
-    public GrpcCountryService(CountryService countryService) {
-        this.countryService =  countryService;
+    public GrpcCountryService(CountryRepository countryRepository) {
+        this.countryRepository =  countryRepository;
     }
 
     @Override
     public void country(CodeRequest request, StreamObserver<CountryResponse> responseObserver) {
-        final Country country = countryService.countryByCode(request.getCode());
+        final Country country = countryRepository.findCountryEntityByCode(request.getCode())
+                .map(Country::instance)
+                .orElseThrow(() -> new NoSuchCountryByCodeException("No such country"));
+
         assert country.lastModifyDate() != null;
         responseObserver.onNext(
                 CountryResponse.newBuilder()
@@ -42,13 +48,11 @@ public class GrpcCountryService extends CountryServiceGrpc.CountryServiceImplBas
             int count = 0;
             @Override
             public void onNext(CountryRequest request) {
-                countryService.addCountry(
-                        new Country(
-                                request.getName(),
-                                request.getCode(),
-                                new Date()
-                        )
-                );
+                CountryEntity countryEntity = new CountryEntity();
+                countryEntity.setName(request.getName());
+                countryEntity.setCode(request.getCode());
+                countryEntity.setLastModifyDate(new Date());
+                countryRepository.save(countryEntity);
                 count++;
             }
 
@@ -69,7 +73,15 @@ public class GrpcCountryService extends CountryServiceGrpc.CountryServiceImplBas
 
     @Override
     public void allCountry(Empty request, StreamObserver<CountryResponse> responseObserver) {
-        List<Country> countries = countryService.allCountries();
+        List<Country> countries =  countryRepository.findAll()
+                .stream()
+                .map(countryEntity -> new Country(
+                        countryEntity.getName(),
+                        countryEntity.getCode(),
+                        countryEntity.getLastModifyDate()
+                ))
+                .toList();
+
         for (Country country : countries) {
             assert country.lastModifyDate() != null;
             responseObserver.onNext(
@@ -85,13 +97,12 @@ public class GrpcCountryService extends CountryServiceGrpc.CountryServiceImplBas
 
     @Override
     public void addCountry(CountryRequest request, StreamObserver<CountryResponse> responseObserver) {
-        Country country = countryService.addCountry(
-                new Country(
-                        request.getName(),
-                        request.getCode(),
-                        new Date()
-                )
-        );
+        CountryEntity countryEntity = new CountryEntity();
+        countryEntity.setName(request.getName());
+        countryEntity.setCode(request.getCode());
+        countryEntity.setLastModifyDate(new Date());
+        Country country = Country.instance(countryRepository.save(countryEntity));
+
         assert country.lastModifyDate() != null;
         responseObserver.onNext(
                 CountryResponse.newBuilder()
@@ -101,6 +112,5 @@ public class GrpcCountryService extends CountryServiceGrpc.CountryServiceImplBas
                         .build()
         );
         responseObserver.onCompleted();
-
     }
 }
