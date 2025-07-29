@@ -8,6 +8,8 @@ import guru.country.domain.graphql.CountryInputGql;
 import guru.country.ex.NoSuchCountryByCodeException;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
 
 import java.util.Date;
 import java.util.List;
@@ -32,6 +34,17 @@ public class DbCountryService implements CountryService {
                 ))
                 .toList();
     }
+
+    @Override
+    public Page<Country> allCountries(Pageable pageable) {
+        return countryRepository.findAll(pageable)
+                .map(countryEntity -> new Country(
+                        countryEntity.getName(),
+                        countryEntity.getCode(),
+                        countryEntity.getLastModifyDate()
+                ));
+    }
+
 
     @Override
     public List<CountryGql> allCountriesGpl() {
