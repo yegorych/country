@@ -4,7 +4,6 @@ package guru.country.controller;
 import guru.country.domain.Country;
 import guru.country.dto.CountryDto;
 import guru.country.service.CountryService;
-import jakarta.websocket.server.PathParam;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 
@@ -28,13 +27,18 @@ public class CountryController {
     }
 
     @PostMapping("/add")
-    public void add(@RequestBody CountryDto country) {
-        countryService.addCountry(Country.fromCountryDto(country));
+    public CountryDto add(@RequestBody CountryDto country) {
+        return CountryDto.fromCountry(countryService.addCountry(Country.instance(country)));
     }
 
     @PatchMapping("/update/{code}")
     public void update(@PathVariable String code, @RequestBody CountryDto country) {
         countryService.updateCountryNameByCode(new Country(country.name(), code, new Date()));
+    }
+
+    @GetMapping("/{code}")
+    public CountryDto byCode(@PathVariable String code) {
+        return CountryDto.fromCountry(countryService.countryByCode(code));
     }
 
 
