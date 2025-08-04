@@ -1,4 +1,8 @@
 spring:
+  grpc:
+    server:
+      servlet:
+        enabled: false
   application:
     name: country
   datasource:
@@ -31,11 +35,16 @@ spring:
     show-sql: false
     generate-ddl: true
     open-in-view: false
+  graphql:
+    graphiql:
+      enabled: true
 
 server:
-  port: 8096
+  port: 8282
 
 api:
   version: v1.0
+country:
+  base-uri: 'http://127.0.0.1:8282'
 
 

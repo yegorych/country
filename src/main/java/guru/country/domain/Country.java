@@ -11,7 +11,7 @@ public record Country(@NonNull String name,
                       @Nullable String code,
                       @Nullable Date lastModifyDate) {
 
-    public static Country fromCountryDto(CountryDto countryDto){
+    public static Country instance(CountryDto countryDto){
         return new Country(
                 countryDto.name(),
                 countryDto.code(),
@@ -19,7 +19,7 @@ public record Country(@NonNull String name,
         );
     }
 
-    public  static Country fromCountryEntity(CountryEntity country){
+    public  static Country instance(CountryEntity country){
         return new Country(country.getName(), country.getCode(), country.getLastModifyDate());
     }
 }

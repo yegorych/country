@@ -1,0 +1,38 @@
+syntax = "proto3";
+
+package guru.grpc.country;
+
+import "google/protobuf/timestamp.proto";
+import "google/protobuf/empty.proto";
+
+option java_multiple_files = true;
+option java_package = "guru.grpc.country";
+option java_outer_classname = "CountryProto";
+
+
+service CountryService {
+  rpc Country(CodeRequest) returns (CountryResponse) {}
+  rpc AllCountry(google.protobuf.Empty) returns (stream CountryResponse) {}
+  rpc AddCountry(CountryRequest) returns (CountryResponse) {}
+  rpc AddCountries(stream CountryRequest) returns (Count) {}
+
+}
+
+message CodeRequest {
+  string code = 1;
+}
+
+message Count {
+  uint32 count = 1;
+}
+
+message CountryRequest {
+  string name = 1;
+  string code = 2;
+}
+
+message CountryResponse {
+  string name = 1;
+  google.protobuf.Timestamp lastModifyDate = 2;
+  string code = 3;
+}

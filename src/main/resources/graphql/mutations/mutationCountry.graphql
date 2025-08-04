@@ -1,0 +1,7 @@
+mutation addCountryy($input: CountryInput!){
+    add(input: $input){
+        id
+        code,
+        name
+    }
+}

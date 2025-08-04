@@ -1,0 +1,16 @@
+query AllCountries {
+    countries {
+        id
+        name
+        code
+        lastModifyDate
+    }
+}
+
+query Country($code: String!) {
+    country(code: $code) {
+        code,
+        name,
+        id
+    }
+}
